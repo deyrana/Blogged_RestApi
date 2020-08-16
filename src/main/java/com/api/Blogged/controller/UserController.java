@@ -57,8 +57,7 @@ public class UserController {
 	public ResponseEntity<Boolean> validateUser(@RequestBody String formData) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			CredentialDto credentialDto = null;
-			credentialDto = mapper.readValue(formData, new TypeReference<CredentialDto>() {
+			CredentialDto credentialDto = mapper.readValue(formData, new TypeReference<CredentialDto>() {
 			});
 			return ResponseEntity.ok().body(credentialsService.validateUser(credentialDto));
 		} catch (JsonMappingException e) {

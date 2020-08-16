@@ -45,4 +45,14 @@ public class BlogsServiceImpl implements BlogsService{
 		return new ArrayList<>();
 	}
 
+	@Override
+	public void saveBlog(BlogsDto blogsDto) throws Exception{
+		BlogsEntity blogsEntity = new BlogsEntity();
+		blogsEntity.setHeader(blogsDto.getHeader());
+		blogsEntity.setContent(blogsDto.getContent().getBytes());
+		blogsEntity.setCreatedBy(blogsDto.getCreatedBy());
+		blogsEntity.setGenres(blogsDto.getGenres());
+		blogsRepo.saveAndFlush(blogsEntity);
+	}
+
 }

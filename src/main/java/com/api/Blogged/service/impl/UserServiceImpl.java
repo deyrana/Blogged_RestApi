@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService {
 	public UserEntity getUser(String username) {
 		try {
 			UserEntity userEntity = userRepo.getUser(username);
-			LOG.info("User entity - {}", userEntity);
 			userEntity.setImage(FileUtils.decompressBytes(userEntity.getImage()));
 			return userEntity;
 		} catch (Exception e) {
