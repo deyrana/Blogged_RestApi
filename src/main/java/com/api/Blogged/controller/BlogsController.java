@@ -45,13 +45,13 @@ public class BlogsController {
 	
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<String> saveBlog(@RequestBody String formData){
+	public ResponseEntity<Boolean> saveBlog(@RequestBody String formData){
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			BlogsDto blogsDto = mapper.readValue(formData, new TypeReference<BlogsDto>() {
 			});
 			blogsService.saveBlog(blogsDto);
-			return ResponseEntity.ok().body("Entry save successfully");
+			return ResponseEntity.ok().body(true);
 		} catch (JsonMappingException e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		} catch (JsonProcessingException e) {
@@ -59,7 +59,7 @@ public class BlogsController {
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
-		return ResponseEntity.badRequest().body("Error occurred while saving");
+		return ResponseEntity.badRequest().body(false);
 	}
 
 }
