@@ -31,4 +31,19 @@ public class CredentialsServiceImpl implements CredentialsService {
 		return false;
 	}
 
+	@Override
+	public boolean checkUsernameExits(String username) {
+		try {
+			CredentialsEntity credentialsEntity = credentialsRepo.findByUsername(username);
+			if(credentialsEntity!=null) {
+				LOG.info("Username found");
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			LOG.error("Error occured due to - {}", e.getMessage());
+		}
+		return true;
+	}
+
 }

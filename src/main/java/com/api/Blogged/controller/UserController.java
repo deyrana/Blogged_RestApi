@@ -43,7 +43,11 @@ public class UserController {
 	public ResponseEntity<UserEntity> saveUser(@RequestPart(value = "imageFile", required = false) MultipartFile file,
 			@RequestPart(value = "info") UserDto userDto) {
 		try {
-			UserEntity entity = userService.saveUserData(file, userDto);
+			UserEntity entity = null;
+			if(credentialsService.checkUsernameExits(userDto.getUsername())) {
+				return ResponseEntity.badRequest().body(entity);
+			}
+			entity = userService.saveUserData(file, userDto);
 			LOG.info("User Entity - {}", entity);
 			return ResponseEntity.ok().body(entity);
 		} catch (Exception e) {
@@ -59,7 +63,11 @@ public class UserController {
 			ObjectMapper mapper = new ObjectMapper();
 			CredentialDto credentialDto = mapper.readValue(formData, new TypeReference<CredentialDto>() {
 			});
-			return ResponseEntity.ok().body(credentialsService.validateUser(credentialDto));
+			if(credentialsService.checkUsernameExits(credentialDto.getUsername())) {
+				return ResponseEntity.ok().body(credentialsService.validateUser(credentialDto));
+			} else {
+				return ResponseEntity.badRequest().body(false);
+			}
 		} catch (JsonMappingException e) {
 			LOG.error("Error occurred due to - {}", e.getMessage());
 		} catch (JsonProcessingException e) {
