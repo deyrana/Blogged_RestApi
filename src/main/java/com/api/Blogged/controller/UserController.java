@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.api.Blogged.dto.CredentialDto;
+import com.api.Blogged.dto.UserCompleteDto;
 import com.api.Blogged.dto.UserDto;
 import com.api.Blogged.entity.UserEntity;
+import com.api.Blogged.exceptions.UserNotFoundException;
 import com.api.Blogged.service.CredentialsService;
 import com.api.Blogged.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +46,7 @@ public class UserController {
 			@RequestPart(value = "info") UserDto userDto) {
 		try {
 			UserEntity entity = null;
-			if(credentialsService.checkUsernameExits(userDto.getUsername())) {
+			if (credentialsService.checkUsernameExits(userDto.getUsername())) {
 				return ResponseEntity.badRequest().body(entity);
 			}
 			entity = userService.saveUserData(file, userDto);
@@ -63,7 +65,7 @@ public class UserController {
 			ObjectMapper mapper = new ObjectMapper();
 			CredentialDto credentialDto = mapper.readValue(formData, new TypeReference<CredentialDto>() {
 			});
-			if(credentialsService.checkUsernameExits(credentialDto.getUsername())) {
+			if (credentialsService.checkUsernameExits(credentialDto.getUsername())) {
 				return ResponseEntity.ok().body(credentialsService.validateUser(credentialDto));
 			} else {
 				return ResponseEntity.badRequest().body(false);
@@ -82,12 +84,28 @@ public class UserController {
 		try {
 			UserEntity userEntity = userService.getUser(username);
 			if (userEntity == null)
-				throw new Exception("User not found");
+				throw new UserNotFoundException("User not found");
 			return ResponseEntity.ok().body(userEntity);
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
 		return ResponseEntity.notFound().build();
+	}
+
+	@GetMapping("/userDetail")
+	@ResponseBody
+	public ResponseEntity<UserCompleteDto> getCompleteUserData(@RequestParam("userId") int userId,
+			@RequestParam("username") String username) {
+		try {
+			UserCompleteDto userCompleteDto = userService.getCompeteUserData(userId, username);
+			if (userCompleteDto.getUserId() == null) {
+				throw new UserNotFoundException("User Does Not Exist");
+			}
+			return ResponseEntity.ok().body(userCompleteDto);
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return ResponseEntity.badRequest().build();
 	}
 
 }

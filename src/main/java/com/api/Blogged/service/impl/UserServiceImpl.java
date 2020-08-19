@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.api.Blogged.dto.UserCompleteDto;
 import com.api.Blogged.dto.UserDto;
 import com.api.Blogged.entity.CredentialsEntity;
 import com.api.Blogged.entity.UserEntity;
@@ -60,6 +61,19 @@ public class UserServiceImpl implements UserService {
 			UserEntity userEntity = userRepo.getUser(username);
 			userEntity.setImage(FileUtils.decompressBytes(userEntity.getImage()));
 			return userEntity;
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public UserCompleteDto getCompeteUserData(int userId, String username) {
+		try {
+			UserCompleteDto userCompleteDto = userRepo.getCompleteUserData(userId, username);
+			LOG.info("{}", userCompleteDto);
+			userCompleteDto.setImage(FileUtils.decompressBytes(userCompleteDto.getImage()));
+			return userCompleteDto;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
