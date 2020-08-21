@@ -94,10 +94,10 @@ public class UserController {
 
 	@GetMapping("/userDetail")
 	@ResponseBody
-	public ResponseEntity<UserCompleteDto> getCompleteUserData(@RequestParam("userId") int userId,
+	public ResponseEntity<UserCompleteDto> getCompleteUserData(@RequestParam("userId") String userId,
 			@RequestParam("username") String username) {
 		try {
-			UserCompleteDto userCompleteDto = userService.getCompeteUserData(userId, username);
+			UserCompleteDto userCompleteDto = userService.getCompeteUserData(Integer.parseInt(userId), username);
 			if (userCompleteDto.getUserId() == null) {
 				throw new UserNotFoundException("User Does Not Exist");
 			}
