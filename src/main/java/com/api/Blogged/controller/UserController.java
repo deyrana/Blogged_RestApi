@@ -19,7 +19,7 @@ import com.api.Blogged.dto.CredentialDto;
 import com.api.Blogged.dto.UserCompleteDto;
 import com.api.Blogged.dto.UserDto;
 import com.api.Blogged.entity.UserEntity;
-import com.api.Blogged.exceptions.UserNotFoundException;
+import com.api.Blogged.exceptions.CustomNotFoundException;
 import com.api.Blogged.service.CredentialsService;
 import com.api.Blogged.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -84,7 +84,7 @@ public class UserController {
 		try {
 			UserEntity userEntity = userService.getUser(username);
 			if (userEntity == null)
-				throw new UserNotFoundException("User not found");
+				throw new CustomNotFoundException("User not found");
 			return ResponseEntity.ok().body(userEntity);
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
@@ -99,7 +99,7 @@ public class UserController {
 		try {
 			UserCompleteDto userCompleteDto = userService.getCompeteUserData(Integer.parseInt(userId), username);
 			if (userCompleteDto.getUserId() == null) {
-				throw new UserNotFoundException("User Does Not Exist");
+				throw new CustomNotFoundException("User Does Not Exist");
 			}
 			return ResponseEntity.ok().body(userCompleteDto);
 		} catch (Exception e) {

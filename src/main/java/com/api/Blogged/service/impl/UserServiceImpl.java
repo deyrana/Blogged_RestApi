@@ -71,7 +71,6 @@ public class UserServiceImpl implements UserService {
 	public UserCompleteDto getCompeteUserData(int userId, String username) {
 		try {
 			UserCompleteDto userCompleteDto = userRepo.getCompleteUserData(userId, username);
-			LOG.info("{}", userCompleteDto);
 			userCompleteDto.setImage(FileUtils.decompressBytes(userCompleteDto.getImage()));
 			return userCompleteDto;
 		} catch (Exception e) {

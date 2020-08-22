@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.BlogsDto;
-import com.api.Blogged.entity.BlogsEntity;
+import com.api.Blogged.exceptions.CustomNotFoundException;
 import com.api.Blogged.service.BlogsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -34,7 +36,7 @@ public class BlogsController {
 
 	@GetMapping
 	@ResponseBody
-	public ResponseEntity<List<BlogsDto>> getAllBlogs() {
+	public ResponseEntity<List<BlogsCompleteDto>> getAllBlogs() {
 		try {
 			return ResponseEntity.ok().body(blogsService.getAllBlogs());
 		} catch (Exception e) {
@@ -42,10 +44,10 @@ public class BlogsController {
 		}
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<Boolean> saveBlog(@RequestBody String formData){
+	public ResponseEntity<Boolean> saveBlog(@RequestBody String formData) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			BlogsDto blogsDto = mapper.readValue(formData, new TypeReference<BlogsDto>() {
@@ -60,6 +62,22 @@ public class BlogsController {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
 		return ResponseEntity.badRequest().body(false);
+	}
+
+	@GetMapping(path = "/blog")
+	@ResponseBody
+	public ResponseEntity<BlogsCompleteDto> getBlog(@RequestParam("blogid") Integer blogid) {
+		try {
+			BlogsCompleteDto blogsCompleteDto = blogsService.getBlog(blogid);
+			if (blogsCompleteDto != null) {
+				return ResponseEntity.ok().body(blogsCompleteDto);
+			} else {
+				throw new CustomNotFoundException("Blog Not found");
+			}
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return ResponseEntity.badRequest().build();
 	}
 
 }
