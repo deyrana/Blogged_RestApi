@@ -1,11 +1,15 @@
 package com.api.Blogged.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.UserCompleteDto;
 import com.api.Blogged.dto.UserDto;
 import com.api.Blogged.entity.CredentialsEntity;
@@ -77,6 +81,20 @@ public class UserServiceImpl implements UserService {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
 		return null;
+	}
+
+	@Override
+	public List<BlogsCompleteDto> findAllBlogsOfUser(String username) {
+		try {
+			List<BlogsCompleteDto> blogsCompleteDtos = userRepo.findAllBlogsOfUser(username);
+//			for(BlogsCompleteDto dto: blogsCompleteDtos) {
+//				dto.setImage(FileUtils.decompressBytes(dto.getImage()));
+//			}
+			return blogsCompleteDtos;
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return new ArrayList<>();
 	}
 
 }

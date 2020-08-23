@@ -1,5 +1,7 @@
 package com.api.Blogged.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.CredentialDto;
 import com.api.Blogged.dto.UserCompleteDto;
 import com.api.Blogged.dto.UserDto;
@@ -102,6 +105,17 @@ public class UserController {
 				throw new CustomNotFoundException("User Does Not Exist");
 			}
 			return ResponseEntity.ok().body(userCompleteDto);
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return ResponseEntity.badRequest().build();
+	}
+
+	@GetMapping("/blogs")
+	@ResponseBody
+	public ResponseEntity<List<BlogsCompleteDto>> findAllBlogsOfUser(@RequestParam("username") String username) {
+		try {
+			return ResponseEntity.ok().body(userService.findAllBlogsOfUser(username));
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}

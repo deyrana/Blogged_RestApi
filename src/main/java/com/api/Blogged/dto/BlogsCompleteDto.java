@@ -1,7 +1,6 @@
 package com.api.Blogged.dto;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Date;
 
 public class BlogsCompleteDto {
@@ -27,6 +26,19 @@ public class BlogsCompleteDto {
 		this.createdTs = createdTs;
 		this.lastUpdated = lastUpdated;
 		this.image = image;
+		this.contentStr = new String(content, StandardCharsets.UTF_8);
+	}
+	
+	public BlogsCompleteDto(int blogId, String header, byte[] content, String createdBy, String genres, Date createdTs,
+			Date lastUpdated) {
+		super();
+		this.blogId = blogId;
+		this.header = header;
+		this.content = content;
+		this.createdBy = createdBy;
+		this.genres = genres;
+		this.createdTs = createdTs;
+		this.lastUpdated = lastUpdated;
 		this.contentStr = new String(content, StandardCharsets.UTF_8);
 	}
 

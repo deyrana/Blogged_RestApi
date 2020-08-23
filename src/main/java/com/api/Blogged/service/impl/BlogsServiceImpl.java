@@ -54,4 +54,15 @@ public class BlogsServiceImpl implements BlogsService {
 		return blogsCompleteDto;
 	}
 
+	@Override
+	public String deleteBlog(int blogid) {
+		try {
+			blogsRepo.deleteById(blogid);
+			return "Blog no "+blogid+" deleted successfully";
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return "Error occurred while deletiing blog";
+	}
+
 }

@@ -13,4 +13,5 @@ public interface BlogsService {
 
 	public BlogsCompleteDto getBlog(Integer blogid);
 
+	public String deleteBlog(int blogid);
 }
