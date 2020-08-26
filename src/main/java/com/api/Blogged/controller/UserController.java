@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,6 +84,7 @@ public class UserController {
 
 	@GetMapping("/user")
 	@ResponseBody
+	@Cacheable(cacheNames="users")
 	public ResponseEntity<UserEntity> getUser(@RequestParam("username") String username) {
 		try {
 			UserEntity userEntity = userService.getUser(username);
@@ -97,6 +99,7 @@ public class UserController {
 
 	@GetMapping("/userDetail")
 	@ResponseBody
+	@Cacheable(cacheNames="userComplete")
 	public ResponseEntity<UserCompleteDto> getCompleteUserData(@RequestParam("userId") String userId,
 			@RequestParam("username") String username) {
 		try {

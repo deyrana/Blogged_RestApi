@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,6 +69,7 @@ public class BlogsController {
 
 	@GetMapping(path = "/blog")
 	@ResponseBody
+	@Cacheable(cacheNames="blogs")
 	public ResponseEntity<BlogsCompleteDto> getBlog(@RequestParam("blogid") Integer blogid) {
 		try {
 			BlogsCompleteDto blogsCompleteDto = blogsService.getBlog(blogid);
