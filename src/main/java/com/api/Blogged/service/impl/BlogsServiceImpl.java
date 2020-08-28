@@ -6,12 +6,15 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.BlogsDto;
 import com.api.Blogged.entity.BlogsEntity;
+import com.api.Blogged.entity.FavouriteBlogsEntity;
 import com.api.Blogged.repo.BlogsRepo;
+import com.api.Blogged.repo.FavouriteBlogsRepo;
 import com.api.Blogged.service.BlogsService;
 import com.api.Blogged.util.FileUtils;
 
@@ -23,11 +26,14 @@ public class BlogsServiceImpl implements BlogsService {
 	@Autowired
 	private BlogsRepo blogsRepo;
 
+	@Autowired
+	private FavouriteBlogsRepo favouriteBlogsRepo;
+
 	@Override
 	public List<BlogsCompleteDto> getAllBlogs() {
 		try {
 			List<BlogsCompleteDto> blogsCompleteDtos = blogsRepo.findAllBlogs();
-			for(BlogsCompleteDto dto: blogsCompleteDtos) {
+			for (BlogsCompleteDto dto : blogsCompleteDtos) {
 				dto.setImage(FileUtils.decompressBytes(dto.getImage()));
 			}
 			return blogsCompleteDtos;
@@ -58,11 +64,57 @@ public class BlogsServiceImpl implements BlogsService {
 	public String deleteBlog(int blogid) {
 		try {
 			blogsRepo.deleteById(blogid);
-			return "Blog no "+blogid+" deleted successfully";
+			return "Blog no " + blogid + " deleted successfully";
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
 		return "Error occurred while deletiing blog";
+	}
+
+	@Override
+	public void setBlogToFav(String username, int blogId) {
+		try {
+			FavouriteBlogsEntity favouriteBlogsEntity = new FavouriteBlogsEntity();
+			favouriteBlogsEntity.setUsername(username);
+			favouriteBlogsEntity.setBlog_id(blogId);
+			if (favouriteBlogsRepo.findFavBlog(username, blogId) == null) {
+				favouriteBlogsRepo.saveAndFlush(favouriteBlogsEntity);
+			} else {
+				LOG.info("Already marked as favourite");
+			}
+		} catch (Exception e) {
+			LOG.error("Error occurred while setting blog# {} to favourite user- {} - {}", blogId, username,
+					e.getMessage());
+		}
+	}
+
+	@Override
+	public boolean getfavBlog(String username, int blogId) {
+		try {
+			return favouriteBlogsRepo.findFavBlog(username, blogId) != null;
+		} catch (Exception e) {
+			LOG.error("Error occurred while fetching fav");
+		}
+		return false;
+	}
+
+	@Override
+	public void removeFavBlog(String username, int blogId) {
+		try {
+			favouriteBlogsRepo.removeFavBlog(username, blogId);
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+	}
+
+	@Override
+	public long getFavBlogCount(String username) {
+		try {
+			return favouriteBlogsRepo.getFavBlogCount(username);
+		} catch (Exception e) {
+			LOG.error("Error occurred while fetching Fav Blog Count- {}", e.getMessage());
+		}
+		return 0;
 	}
 
 }

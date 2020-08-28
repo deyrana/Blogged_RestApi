@@ -84,7 +84,7 @@ public class UserController {
 
 	@GetMapping("/user")
 	@ResponseBody
-	@Cacheable(cacheNames="users")
+	@Cacheable(cacheNames = "users")
 	public ResponseEntity<UserEntity> getUser(@RequestParam("username") String username) {
 		try {
 			UserEntity userEntity = userService.getUser(username);
@@ -99,7 +99,7 @@ public class UserController {
 
 	@GetMapping("/userDetail")
 	@ResponseBody
-	@Cacheable(cacheNames="userComplete")
+//	@Cacheable(cacheNames="userComplete")
 	public ResponseEntity<UserCompleteDto> getCompleteUserData(@RequestParam("userId") String userId,
 			@RequestParam("username") String username) {
 		try {
@@ -119,6 +119,17 @@ public class UserController {
 	public ResponseEntity<List<BlogsCompleteDto>> findAllBlogsOfUser(@RequestParam("username") String username) {
 		try {
 			return ResponseEntity.ok().body(userService.findAllBlogsOfUser(username));
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return ResponseEntity.badRequest().build();
+	}
+
+	@GetMapping("/blogsCount")
+	@ResponseBody
+	public ResponseEntity<Long> getBlogsCountForUser(@RequestParam("username") String username) {
+		try {
+			return ResponseEntity.ok().body(userService.getBlogsCountForUser(username));
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}

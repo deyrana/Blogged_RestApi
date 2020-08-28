@@ -87,14 +87,21 @@ public class UserServiceImpl implements UserService {
 	public List<BlogsCompleteDto> findAllBlogsOfUser(String username) {
 		try {
 			List<BlogsCompleteDto> blogsCompleteDtos = userRepo.findAllBlogsOfUser(username);
-//			for(BlogsCompleteDto dto: blogsCompleteDtos) {
-//				dto.setImage(FileUtils.decompressBytes(dto.getImage()));
-//			}
 			return blogsCompleteDtos;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
 		return new ArrayList<>();
+	}
+
+	@Override
+	public long getBlogsCountForUser(String username) {
+		try {
+			return userRepo.getBlogsCountForUser(username);
+		} catch (Exception e) {
+			LOG.info("Error occurred while fetching blog count fot user {} - {}", username, e.getMessage());
+		}
+		return 0;
 	}
 
 }

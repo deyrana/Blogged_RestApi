@@ -14,4 +14,12 @@ public interface BlogsService {
 	public BlogsCompleteDto getBlog(Integer blogid);
 
 	public String deleteBlog(int blogid);
+	
+	public void setBlogToFav(String username, int blogId);
+	
+	public boolean getfavBlog(String username, int blogId);
+	
+	public void removeFavBlog(String username, int blogId);
+	
+	public long getFavBlogCount(String username);
 }

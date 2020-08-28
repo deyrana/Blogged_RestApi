@@ -1,6 +1,5 @@
 package com.api.Blogged.dto;
 
-import java.util.Arrays;
 import java.util.Date;
 
 public class UserCompleteDto {
@@ -12,10 +11,9 @@ public class UserCompleteDto {
 	private Date dateOfBirth;
 	private String genres;
 	private byte[] image;
-	private long blogCount;
 
 	public UserCompleteDto(Integer userId, String name, String username, String email, Date dateOfBirth, String genres,
-			byte[] image, long blogCount) {
+			byte[] image) {
 		super();
 		this.userId = userId;
 		this.name = name;
@@ -24,7 +22,6 @@ public class UserCompleteDto {
 		this.dateOfBirth = dateOfBirth;
 		this.genres = genres;
 		this.image = image;
-		this.blogCount = blogCount;
 	}
 
 	public Integer getUserId() {
@@ -83,19 +80,10 @@ public class UserCompleteDto {
 		this.image = image;
 	}
 
-	public long getBlogCount() {
-		return blogCount;
-	}
-
-	public void setBlogCount(long blogCount) {
-		this.blogCount = blogCount;
-	}
-
 	@Override
 	public String toString() {
 		return "UserCompleteDto [userId=" + userId + ", name=" + name + ", username=" + username + ", email=" + email
-				+ ", dateOfBirth=" + dateOfBirth + ", genres=" + genres + ", image=" + Arrays.toString(image)
-				+ ", blogCount=" + blogCount + "]";
+				+ ", dateOfBirth=" + dateOfBirth + ", genres=" + genres + "]";
 	}
 
 }

@@ -13,9 +13,6 @@ import com.api.Blogged.entity.BlogsEntity;
 @Repository
 public interface BlogsRepo extends JpaRepository<BlogsEntity, Integer> {
 
-//	@Query("SELECT be FROM BlogsEntity be ORDER BY be.createdTs DESC")
-//	public List<BlogsEntity> findAllBlogs();
-
 	@Query("SELECT NEW com.api.Blogged.dto.BlogsCompleteDto(be.blogId, be.header, be.content, be.createdBy, "
 			+ "be.genres, be.createdTs, be.lastUpdated, ue.image) "
 			+ "FROM BlogsEntity be JOIN CredentialsEntity ce ON be.createdBy = ce.username "
@@ -27,6 +24,6 @@ public interface BlogsRepo extends JpaRepository<BlogsEntity, Integer> {
 			+ "be.genres, be.createdTs, be.lastUpdated, ue.image) "
 			+ "FROM BlogsEntity be JOIN CredentialsEntity ce ON be.createdBy = ce.username "
 			+ "JOIN UserEntity ue ON ue.userId = ce.user_id "
-			+ "ORDER BY be.createdTs DESC")
+			+ "ORDER BY be.lastUpdated DESC")
 	public List<BlogsCompleteDto> findAllBlogs();
 }

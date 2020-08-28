@@ -19,4 +19,6 @@ public interface UserService {
 	public UserCompleteDto getCompeteUserData(int userId, String username);
 	
 	public List<BlogsCompleteDto> findAllBlogsOfUser(String username);
+	
+	public long getBlogsCountForUser(String username);
 }

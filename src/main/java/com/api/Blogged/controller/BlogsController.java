@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.BlogsDto;
+import com.api.Blogged.entity.FavouriteBlogsEntity;
 import com.api.Blogged.exceptions.CustomNotFoundException;
 import com.api.Blogged.service.BlogsService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -69,7 +71,7 @@ public class BlogsController {
 
 	@GetMapping(path = "/blog")
 	@ResponseBody
-	@Cacheable(cacheNames="blogs")
+	@Cacheable(cacheNames = "blogs")
 	public ResponseEntity<BlogsCompleteDto> getBlog(@RequestParam("blogid") Integer blogid) {
 		try {
 			BlogsCompleteDto blogsCompleteDto = blogsService.getBlog(blogid);
@@ -83,11 +85,51 @@ public class BlogsController {
 		}
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@DeleteMapping(path = "/{blogid}")
 	@ResponseBody
-	public ResponseEntity<Boolean> deleteBlog(@PathVariable("blogid") int blogid){
-		return ResponseEntity.ok().body(blogsService.deleteBlog(blogid)!=null);
+	public ResponseEntity<Boolean> deleteBlog(@PathVariable("blogid") int blogid) {
+		return ResponseEntity.ok().body(blogsService.deleteBlog(blogid) != null);
+	}
+
+	@PostMapping(path = "/favourite")
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public void setBlogToFav(@RequestBody String formData) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+
+			FavouriteBlogsEntity favouriteBlogsEntity = mapper.readValue(formData,
+					new TypeReference<FavouriteBlogsEntity>() {
+					});
+
+			LOG.info("FavouriteBlogsEntity - {}", favouriteBlogsEntity);
+			blogsService.setBlogToFav(favouriteBlogsEntity.getUsername(), favouriteBlogsEntity.getBlog_id());
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+	}
+
+	@GetMapping(path = "/getfav")
+	@ResponseBody
+	public ResponseEntity<Boolean> getFavBlog(@RequestParam("username") String username,
+			@RequestParam("blogid") int blogid) {
+		return ResponseEntity.ok().body(blogsService.getfavBlog(username, blogid));
+	}
+
+	@DeleteMapping(path = "/getfav")
+	public void removeFavBlog(@RequestParam("username") String username, @RequestParam("blogid") int blogid) {
+		blogsService.removeFavBlog(username, blogid);
+	}
+	
+	@GetMapping(path = "/getFavCount")
+	@ResponseBody
+	public ResponseEntity<Long> getFavBlogCount(@RequestParam("username") String username){
+		try {
+			return ResponseEntity.ok().body(blogsService.getFavBlogCount(username));
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return ResponseEntity.badRequest().build();
 	}
 
 }

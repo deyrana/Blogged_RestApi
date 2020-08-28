@@ -18,9 +18,8 @@ public interface UserRepo extends JpaRepository<UserEntity, Integer> {
 	public UserEntity getUser(@Param("username") String username);
 	
 	@Query("SELECT new com.api.Blogged.dto.UserCompleteDto(ue.userId, ue.name, ce.username, "
-			+ "ue.email, ue.dateOfBirth, ue.genres, ue.image, COUNT(be.blogId)) "
+			+ "ue.email, ue.dateOfBirth, ue.genres, ue.image) "
 			+ "FROM UserEntity ue INNER JOIN CredentialsEntity ce ON ue.userId = ce.user_id "
-			+ "LEFT JOIN BlogsEntity be ON be.createdBy = ce.username "
 			+ "WHERE ue.userId = :userId AND ce.username = :username")
 	public UserCompleteDto getCompleteUserData(@Param("userId") int userId, @Param("username") String username);
 	
@@ -31,4 +30,7 @@ public interface UserRepo extends JpaRepository<UserEntity, Integer> {
 			+ "WHERE be.createdBy = :username "
 			+ "ORDER BY be.createdTs DESC")
 	public List<BlogsCompleteDto> findAllBlogsOfUser(@Param("username") String username);
+	
+	@Query("SELECT COUNT(be) FROM BlogsEntity be WHERE be.createdBy = :username")
+	public long getBlogsCountForUser(@Param("username") String username);
 }
