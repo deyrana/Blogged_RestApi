@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.BlogsDto;
 import com.api.Blogged.entity.BlogsEntity;
+import com.api.Blogged.entity.CommentsEntity;
 import com.api.Blogged.entity.FavouriteBlogsEntity;
 import com.api.Blogged.repo.BlogsRepo;
+import com.api.Blogged.repo.CommentsRepo;
 import com.api.Blogged.repo.FavouriteBlogsRepo;
 import com.api.Blogged.service.BlogsService;
 import com.api.Blogged.util.FileUtils;
@@ -28,6 +30,9 @@ public class BlogsServiceImpl implements BlogsService {
 
 	@Autowired
 	private FavouriteBlogsRepo favouriteBlogsRepo;
+	
+	@Autowired
+	private CommentsRepo commentsRepo;
 
 	@Override
 	public List<BlogsCompleteDto> getAllBlogs() {
@@ -117,4 +122,24 @@ public class BlogsServiceImpl implements BlogsService {
 		return 0;
 	}
 
+	@Override
+	public List<CommentsEntity> getAllCommentsForBlog(int blogId) {
+		try {
+			return commentsRepo.getAllCommentsForBlog(blogId);
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public void saveComment(CommentsEntity commentsEntity) {
+		try {
+			commentsRepo.saveAndFlush(commentsEntity);
+		} catch (Exception e) {
+			LOG.error("Error occurred while saving comments - {}", e.getMessage());
+		}
+	}
+
+	
 }

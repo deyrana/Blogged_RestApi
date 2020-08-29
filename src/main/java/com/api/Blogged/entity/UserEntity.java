@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +32,7 @@ public class UserEntity {
 	private Timestamp createdTs;
 	@Column(name = "last_updated", updatable = false, insertable = false)
 	private Timestamp lastUpdated;
+	@Lob
 	@Column(name = "image")
 	private byte[] image;
 

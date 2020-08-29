@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.BlogsDto;
+import com.api.Blogged.entity.CommentsEntity;
 import com.api.Blogged.entity.FavouriteBlogsEntity;
 import com.api.Blogged.exceptions.CustomNotFoundException;
 import com.api.Blogged.service.BlogsService;
@@ -130,6 +131,31 @@ public class BlogsController {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
 		return ResponseEntity.badRequest().build();
+	}
+	
+	@GetMapping(path = "/comments/{blogid}")
+	@ResponseBody
+	public ResponseEntity<List<CommentsEntity>> getAllCommentsForBlog(@PathVariable("blogid") int blogId){
+		try {
+			return ResponseEntity.ok().body(blogsService.getAllCommentsForBlog(blogId));
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return ResponseEntity.badRequest().build();
+	}
+	
+	@PostMapping(path = "/comments")
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public void saveComment(@RequestBody String formData) {
+		LOG.info("{}", formData);
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			CommentsEntity commentsEntity = mapper.readValue(formData, new TypeReference<CommentsEntity>() {});
+			blogsService.saveComment(commentsEntity);
+		} catch (JsonProcessingException e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
 	}
 
 }
