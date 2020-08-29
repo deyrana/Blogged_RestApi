@@ -147,7 +147,6 @@ public class BlogsController {
 	@PostMapping(path = "/comments")
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public void saveComment(@RequestBody String formData) {
-		LOG.info("{}", formData);
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
@@ -156,6 +155,17 @@ public class BlogsController {
 		} catch (JsonProcessingException e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
+	}
+	
+	@GetMapping(path = "/getFavBlogs")
+	@ResponseBody
+	public ResponseEntity<List<BlogsCompleteDto>> getFavBlogs(@RequestParam("username") String username){
+		try {
+			return ResponseEntity.ok().body(blogsService.getFavBlogs(username));
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return ResponseEntity.badRequest().build();
 	}
 
 }

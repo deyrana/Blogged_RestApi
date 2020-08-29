@@ -27,4 +27,6 @@ public interface BlogsService {
 	public List<CommentsEntity> getAllCommentsForBlog(int blogId);
 	
 	public void saveComment(CommentsEntity commentsEntity);
+	
+	public List<BlogsCompleteDto> getFavBlogs(String username);
 }

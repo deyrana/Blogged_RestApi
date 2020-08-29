@@ -141,5 +141,16 @@ public class BlogsServiceImpl implements BlogsService {
 		}
 	}
 
+	@Override
+	public List<BlogsCompleteDto> getFavBlogs(String username) {
+		
+		try {
+			return favouriteBlogsRepo.getFavBlogs(username);
+		} catch (Exception e) {
+			LOG.error("Error occurred - {}", e.getMessage());
+		}
+		return new ArrayList<>();
+	}
+
 	
 }

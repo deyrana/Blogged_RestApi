@@ -22,11 +22,10 @@ public interface UserRepo extends JpaRepository<UserEntity, Integer> {
 			+ "FROM UserEntity ue INNER JOIN CredentialsEntity ce ON ue.userId = ce.user_id "
 			+ "WHERE ue.userId = :userId AND ce.username = :username")
 	public UserCompleteDto getCompleteUserData(@Param("userId") int userId, @Param("username") String username);
-	
+
 	@Query("SELECT NEW com.api.Blogged.dto.BlogsCompleteDto(be.blogId, be.header, be.content, be.createdBy, "
 			+ "be.genres, be.createdTs, be.lastUpdated) "
-			+ "FROM BlogsEntity be JOIN CredentialsEntity ce ON be.createdBy = ce.username "
-			+ "JOIN UserEntity ue ON ue.userId = ce.user_id "
+			+ "FROM BlogsEntity be "
 			+ "WHERE be.createdBy = :username "
 			+ "ORDER BY be.createdTs DESC")
 	public List<BlogsCompleteDto> findAllBlogsOfUser(@Param("username") String username);
