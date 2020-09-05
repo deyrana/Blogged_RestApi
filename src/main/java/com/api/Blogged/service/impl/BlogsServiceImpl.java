@@ -38,9 +38,9 @@ public class BlogsServiceImpl implements BlogsService {
 	public List<BlogsCompleteDto> getAllBlogs() {
 		try {
 			List<BlogsCompleteDto> blogsCompleteDtos = blogsRepo.findAllBlogs();
-			for (BlogsCompleteDto dto : blogsCompleteDtos) {
-				dto.setImage(FileUtils.decompressBytes(dto.getImage()));
-			}
+//			for (BlogsCompleteDto dto : blogsCompleteDtos) {
+//				dto.setImage(FileUtils.decompressBytes(dto.getImage()));
+//			}
 			return blogsCompleteDtos;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
@@ -61,7 +61,7 @@ public class BlogsServiceImpl implements BlogsService {
 	@Override
 	public BlogsCompleteDto getBlog(Integer blogid) {
 		BlogsCompleteDto blogsCompleteDto = blogsRepo.findBlogDetail(blogid);
-		blogsCompleteDto.setImage(FileUtils.decompressBytes(blogsCompleteDto.getImage()));
+//		blogsCompleteDto.setImage(FileUtils.decompressBytes(blogsCompleteDto.getImage()));
 		return blogsCompleteDto;
 	}
 

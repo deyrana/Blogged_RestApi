@@ -7,13 +7,13 @@ import com.api.Blogged.entity.UserEntity;
 
 public class UserDtoToEntity {
 
-	public static UserEntity mapEntity(UserDto userDto, byte[] image) {
+	public static UserEntity mapEntity(UserDto userDto) {
 		UserEntity entity = new UserEntity();
 		entity.setName(userDto.getName());
 		entity.setEmail(userDto.getEmail());
 		entity.setGenres(userDto.getGenres());
 		entity.setDateOfBirth(userDto.getDob() != null ? Date.valueOf(userDto.getDob()) : null);
-		entity.setImage(image);
+		entity.setImage(userDto.getImage());
 		return entity;
 	}
 

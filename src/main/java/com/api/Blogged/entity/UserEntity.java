@@ -2,14 +2,12 @@ package com.api.Blogged.entity;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -32,9 +30,8 @@ public class UserEntity {
 	private Timestamp createdTs;
 	@Column(name = "last_updated", updatable = false, insertable = false)
 	private Timestamp lastUpdated;
-	@Lob
 	@Column(name = "image")
-	private byte[] image;
+	private String image;
 
 	public Integer getUserId() {
 		return userId;
@@ -92,11 +89,11 @@ public class UserEntity {
 		this.lastUpdated = lastUpdated;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
@@ -104,7 +101,7 @@ public class UserEntity {
 	public String toString() {
 		return "UserEntity [userId=" + userId + ", name=" + name + ", email=" + email + ", dateOfBirth=" + dateOfBirth
 				+ ", genres=" + genres + ", createdTs=" + createdTs + ", lastUpdated=" + lastUpdated + ", image="
-				+ Arrays.toString(image) + "]";
+				+ image + "]";
 	}
 
 }

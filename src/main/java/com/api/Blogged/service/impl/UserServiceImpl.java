@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.UserCompleteDto;
@@ -18,7 +17,6 @@ import com.api.Blogged.mapper.UserDtoToEntity;
 import com.api.Blogged.repo.CredentialsRepo;
 import com.api.Blogged.repo.UserRepo;
 import com.api.Blogged.service.UserService;
-import com.api.Blogged.util.FileUtils;
 import com.api.Blogged.util.HashUtil;
 
 @Service
@@ -33,14 +31,10 @@ public class UserServiceImpl implements UserService {
 	private CredentialsRepo credentialsRepo;
 
 	@Override
-	public UserEntity saveUserData(MultipartFile file, UserDto userDto) {
+	public UserEntity saveUserData(UserDto userDto) {
 
 		try {
-			byte[] image = null;
-			if (file != null) {
-				image = FileUtils.compressBytes(file.getBytes());
-			}
-			UserEntity userEntity = UserDtoToEntity.mapEntity(userDto, image);
+			UserEntity userEntity = UserDtoToEntity.mapEntity(userDto);
 
 			UserEntity savedEntity = userRepo.saveAndFlush(userEntity);
 			// Save in Credentials DB
@@ -63,7 +57,7 @@ public class UserServiceImpl implements UserService {
 	public UserEntity getUser(String username) {
 		try {
 			UserEntity userEntity = userRepo.getUser(username);
-			userEntity.setImage(FileUtils.decompressBytes(userEntity.getImage()));
+//			userEntity.setImage(FileUtils.decompressBytes(userEntity.getImage()));
 			return userEntity;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
@@ -75,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	public UserCompleteDto getCompeteUserData(int userId, String username) {
 		try {
 			UserCompleteDto userCompleteDto = userRepo.getCompleteUserData(userId, username);
-			userCompleteDto.setImage(FileUtils.decompressBytes(userCompleteDto.getImage()));
+//			userCompleteDto.setImage(FileUtils.decompressBytes(userCompleteDto.getImage()));
 			return userCompleteDto;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());

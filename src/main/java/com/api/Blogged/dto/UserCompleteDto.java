@@ -10,10 +10,10 @@ public class UserCompleteDto {
 	private String email;
 	private Date dateOfBirth;
 	private String genres;
-	private byte[] image;
+	private String image;
 
 	public UserCompleteDto(Integer userId, String name, String username, String email, Date dateOfBirth, String genres,
-			byte[] image) {
+			String image) {
 		super();
 		this.userId = userId;
 		this.name = name;
@@ -72,18 +72,18 @@ public class UserCompleteDto {
 		this.genres = genres;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
 	@Override
 	public String toString() {
 		return "UserCompleteDto [userId=" + userId + ", name=" + name + ", username=" + username + ", email=" + email
-				+ ", dateOfBirth=" + dateOfBirth + ", genres=" + genres + "]";
+				+ ", dateOfBirth=" + dateOfBirth + ", genres=" + genres + ", image=" + image + "]";
 	}
 
 }

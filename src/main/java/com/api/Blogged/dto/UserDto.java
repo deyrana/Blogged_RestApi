@@ -8,6 +8,7 @@ public class UserDto {
 	private String email;
 	private String dob;
 	private String genres;
+	private String image;
 
 	public String getName() {
 		return name;
@@ -57,10 +58,18 @@ public class UserDto {
 		this.genres = genres;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
 		return "UserDto [name=" + name + ", username=" + username + ", password=" + password + ", email=" + email
-				+ ", dob=" + dob + ", genres=" + genres + "]";
+				+ ", dob=" + dob + ", genres=" + genres + ", image=" + image + "]";
 	}
 
 }

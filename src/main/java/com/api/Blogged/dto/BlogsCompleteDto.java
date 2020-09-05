@@ -12,11 +12,11 @@ public class BlogsCompleteDto {
 	private String genres;
 	private Date createdTs;
 	private Date lastUpdated;
-	private byte[] image;
+	private String image;
 	private String contentStr;
 
 	public BlogsCompleteDto(int blogId, String header, byte[] content, String createdBy, String genres, Date createdTs,
-			Date lastUpdated, byte[] image) {
+			Date lastUpdated, String image) {
 		super();
 		this.blogId = blogId;
 		this.header = header;
@@ -98,11 +98,11 @@ public class BlogsCompleteDto {
 		this.lastUpdated = lastUpdated;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 

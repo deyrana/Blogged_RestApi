@@ -12,7 +12,7 @@ import com.api.Blogged.entity.UserEntity;
 public interface UserService {
 
 	
-	public UserEntity saveUserData(MultipartFile file, UserDto userDto);
+	public UserEntity saveUserData(UserDto userDto);
 	
 	public UserEntity getUser(String username);
 	

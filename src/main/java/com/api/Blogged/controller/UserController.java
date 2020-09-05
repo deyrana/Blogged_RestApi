@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.CredentialDto;
@@ -44,16 +41,15 @@ public class UserController {
 	@Autowired
 	private CredentialsService credentialsService;
 
-	@PostMapping(consumes = "multipart/form-data")
+	@PostMapping
 	@ResponseBody
-	public ResponseEntity<UserEntity> saveUser(@RequestPart(value = "imageFile", required = false) MultipartFile file,
-			@RequestPart(value = "info") UserDto userDto) {
+	public ResponseEntity<UserEntity> saveUser(@RequestBody UserDto userDto) {
 		try {
 			UserEntity entity = null;
 			if (credentialsService.checkUsernameExits(userDto.getUsername())) {
 				return ResponseEntity.badRequest().body(entity);
 			}
-			entity = userService.saveUserData(file, userDto);
+			entity = userService.saveUserData(userDto);
 			LOG.info("User Entity - {}", entity);
 			return ResponseEntity.ok().body(entity);
 		} catch (Exception e) {
@@ -84,7 +80,7 @@ public class UserController {
 
 	@GetMapping("/user")
 	@ResponseBody
-	@Cacheable(cacheNames = "users")
+//	@Cacheable(cacheNames = "users")
 	public ResponseEntity<UserEntity> getUser(@RequestParam("username") String username) {
 		try {
 			UserEntity userEntity = userService.getUser(username);
