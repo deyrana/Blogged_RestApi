@@ -2,8 +2,6 @@ package com.api.Blogged.service;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.api.Blogged.dto.BlogsCompleteDto;
 import com.api.Blogged.dto.UserCompleteDto;
 import com.api.Blogged.dto.UserDto;

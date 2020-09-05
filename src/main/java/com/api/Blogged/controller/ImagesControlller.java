@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class ImagesControlller {
 	
 	@GetMapping
 	@ResponseBody
+	@Cacheable(cacheNames = "images")
 	public ResponseEntity<List<ImagesEntity>> getAllImages() {
 		try {
 			return ResponseEntity.ok().body(imagesService.fetchAllImages());

@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService {
 	public UserEntity getUser(String username) {
 		try {
 			UserEntity userEntity = userRepo.getUser(username);
-//			userEntity.setImage(FileUtils.decompressBytes(userEntity.getImage()));
 			return userEntity;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
@@ -69,7 +68,6 @@ public class UserServiceImpl implements UserService {
 	public UserCompleteDto getCompeteUserData(int userId, String username) {
 		try {
 			UserCompleteDto userCompleteDto = userRepo.getCompleteUserData(userId, username);
-//			userCompleteDto.setImage(FileUtils.decompressBytes(userCompleteDto.getImage()));
 			return userCompleteDto;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());

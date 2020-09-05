@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.api.Blogged.dto.BlogsCompleteDto;
@@ -18,7 +17,6 @@ import com.api.Blogged.repo.BlogsRepo;
 import com.api.Blogged.repo.CommentsRepo;
 import com.api.Blogged.repo.FavouriteBlogsRepo;
 import com.api.Blogged.service.BlogsService;
-import com.api.Blogged.util.FileUtils;
 
 @Service
 public class BlogsServiceImpl implements BlogsService {
@@ -38,9 +36,6 @@ public class BlogsServiceImpl implements BlogsService {
 	public List<BlogsCompleteDto> getAllBlogs() {
 		try {
 			List<BlogsCompleteDto> blogsCompleteDtos = blogsRepo.findAllBlogs();
-//			for (BlogsCompleteDto dto : blogsCompleteDtos) {
-//				dto.setImage(FileUtils.decompressBytes(dto.getImage()));
-//			}
 			return blogsCompleteDtos;
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
@@ -61,7 +56,6 @@ public class BlogsServiceImpl implements BlogsService {
 	@Override
 	public BlogsCompleteDto getBlog(Integer blogid) {
 		BlogsCompleteDto blogsCompleteDto = blogsRepo.findBlogDetail(blogid);
-//		blogsCompleteDto.setImage(FileUtils.decompressBytes(blogsCompleteDto.getImage()));
 		return blogsCompleteDto;
 	}
 
