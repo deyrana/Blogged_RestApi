@@ -19,4 +19,6 @@ public interface UserService {
 	public List<BlogsCompleteDto> findAllBlogsOfUser(String username);
 	
 	public long getBlogsCountForUser(String username);
+	
+	public boolean editUser(UserCompleteDto userCompleteDto);
 }

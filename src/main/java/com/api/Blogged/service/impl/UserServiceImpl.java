@@ -1,5 +1,6 @@
 package com.api.Blogged.service.impl;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +95,23 @@ public class UserServiceImpl implements UserService {
 			LOG.info("Error occurred while fetching blog count fot user {} - {}", username, e.getMessage());
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean editUser(UserCompleteDto userCompleteDto) {
+		try {
+			String username = credentialsRepo.findByUsername(userCompleteDto.getUsername()).getUsername();
+			UserEntity userEntity = userRepo.getUser(username);
+			userEntity.setImage(userCompleteDto.getImage());
+			userEntity.setName(userCompleteDto.getName());
+			userEntity.setEmail(userCompleteDto.getEmail());
+			userEntity.setDateOfBirth(new Date(userCompleteDto.getDateOfBirth().getTime()) );
+			userRepo.saveAndFlush(userEntity);
+			return true;
+		} catch (Exception e) {
+			LOG.error("Error occurred while editing user details- {}", e.getMessage());
+		}
+		return false;
 	}
 
 }

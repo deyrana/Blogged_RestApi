@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import com.api.Blogged.entity.UserEntity;
 import com.api.Blogged.exceptions.CustomNotFoundException;
 import com.api.Blogged.service.CredentialsService;
 import com.api.Blogged.service.UserService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -130,6 +132,13 @@ public class UserController {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
 		return ResponseEntity.badRequest().build();
+	}
+	
+	@PutMapping("/edit")
+	@ResponseBody
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public ResponseEntity<Boolean> editUserData(@RequestBody UserCompleteDto userCompleteDto){
+		return ResponseEntity.ok().body(userService.editUser(userCompleteDto));
 	}
 
 }
