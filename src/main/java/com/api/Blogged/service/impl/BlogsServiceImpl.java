@@ -62,12 +62,14 @@ public class BlogsServiceImpl implements BlogsService {
 	@Override
 	public String deleteBlog(int blogid) {
 		try {
+			favouriteBlogsRepo.removeFavBlogByBlogId(blogid);
+			commentsRepo.removeCommentsByBlogId(blogid);
 			blogsRepo.deleteById(blogid);
 			return "Blog no " + blogid + " deleted successfully";
 		} catch (Exception e) {
 			LOG.error("Error occurred - {}", e.getMessage());
 		}
-		return "Error occurred while deletiing blog";
+		return "Error occurred while deleting blog";
 	}
 
 	@Override

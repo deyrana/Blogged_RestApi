@@ -33,4 +33,9 @@ public interface FavouriteBlogsRepo extends JpaRepository<FavouriteBlogsEntity, 
 			+ "WHERE fbe.username = :username "
 			+ "ORDER BY be.lastUpdated DESC")
 	public List<BlogsCompleteDto> getFavBlogs(@Param("username") String username);
+	
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM FavouriteBlogsEntity fbe WHERE fbe.blog_id = :blog_id")
+	public void removeFavBlogByBlogId(@Param("blog_id") int blogId);
 }
